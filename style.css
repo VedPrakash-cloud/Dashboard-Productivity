@@ -1,0 +1,17 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html, body{
+    height: 100%;
+    width: 100%;
+}
+
+.navbar{
+    background: rgba(255, 255, 255, 0.055);
+    backdrop-filter: blur(5px) brightness(1.2);
+    padding: 10px 50px;
+    color: aliceblue;
+}

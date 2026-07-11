@@ -1,3 +1,6 @@
+/* ==========================================================================
+   1. GLOBAL & BASE STYLING (Standard Setup)
+   ========================================================================== */
 *{
     padding: 0;
     margin: 0;
@@ -17,8 +20,12 @@ main{
     width: 100%;
     height: 100dvh;
     overflow: hidden;
+    position: relative; 
 }
 
+/* ==========================================================================
+   2. DESKTOP LAYOUT (Default styles)
+   ========================================================================== */
 .container{
     height: 100%;
     display: flex;
@@ -77,16 +84,17 @@ main{
 
 .weather-main{
     display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 .weather-main h3{
-    font-size: 2.1em;
+    font-size: 3em;
     font-weight: 400;
     color: #fff;
     text-wrap: nowrap;
 }
 .weather-main span{
-    font-size: 2em;
+    font-size: 1.2em;
     font-weight: 400;
     color: #fff;
     text-shadow: none;
@@ -98,32 +106,213 @@ main{
     cursor: pointer;
 }
 
+/* Desktop absolute quote center styling */
+.quotes{
+    height: auto;
+    width: 400px;
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    gap: 10px;
+    overflow: hidden;
+    align-items: flex-start;
+    background: #00000017;
+    backdrop-filter: blur(3px);
+    padding: 10px 15px;
+    border-radius: 20px;
+    z-index: 10;
+}
 
+.refresh{
+    font-size: 20px;
+    background: transparent;
+    border: none;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+    color: #fff;
+}
+
+.refresh:active{
+    transform: rotateZ(-360deg);
+}
+
+.quote-header{
+    font-size: 24px;
+    color: #fff;
+    text-shadow: 0 0 2px #000;
+    font-weight: 600;
+}
+
+.quote-author{
+    font-size: 13px;
+    text-align: right;
+    color: #fff;
+    text-shadow: 0 0 2px #000;
+    font-weight: 600;
+}
+
+.forcast-container{
+    height: 100%;
+    width: 100%;
+    border: 1px solid;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    backdrop-filter: blur(8px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+.modal-form{
+    background: linear-gradient(rgba(64, 60, 60, 0.668) 2%, rgba(252, 252, 252, 0.158) 100%),url(./assets/sunny.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    width: 500px;
+    height: 300px;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px #000;
+    text-shadow: 0 0 2px #000;
+    color: #fff;
+}
+.closeBtn{
+    text-align: right;
+    font-size: 22px;
+    line-height: .7;
+    font-weight: 550;
+    cursor: pointer;
+}
+.modal-nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+}
+.left-side{
+    padding: 5px;
+    border-radius: 10px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+}
+
+.left-side input{
+    border: none;
+    font-size: 1.5em;
+    font-weight: 600;
+    background: transparent;
+    outline: none;
+    color: #fff;
+}
+.right-side select{
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 30px;
+    color: #fff;
+}
+option{
+    background-color: grey;
+    padding: 10px 50px 5px 5px !important;
+}
+.temp{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.temp h1{
+    font-size: 45px;
+    font-weight: 500;
+}
+.high-low{
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+.news{
+    font-weight: 550;
+}
+.windy{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid #fff;
+    margin-top: 10px;
+    font-weight: 550;
+}
+
+
+/* ==========================================================================
+   3. MOBILE RESPONSIVE MEDIA QUERY (The Ironclad Fix)
+   ========================================================================== */
 @media (max-width:550px) {
-    main{
-        margin: 20px 0;
+    main {
+        margin: 0;
         height: 100dvh;
-        padding-left: 0;  
-        display: flex;
-        justify-content: center;      
-    }
-    .container{
-        transform: translateY(69%);
-        transition: all 0.9s ease-in-out;
-    }
-    .container h1{
-        font-size:9em
-    }
-    .container span{
-        font-size:3em
+        padding: 10px;  
+        display: block !important; /* Grid hata diya flexbox ki tarah move karne ke liye */
+        position: relative;
     }
 
-    .widget-container{
-        height: 100%;
-        flex-direction: column;
-        gap: 20px;
+    /* 🟢 MOBILE PAR QUOTE (TOP CONTAINER KO SPACE AND FLEXIBILITY DI) */
+    .quotes {
+        position: absolute !important;
+        top: 25px !important; /* Screen ke top se gap */
+        left: 5% !important;
+        width: 90% !important;
+        height: auto !important; /* Lines ke hisab se box khud bada hoga */
+        max-height: 180px;
+        overflow-y: auto !important; /* Agar 5 line se bada quote ho toh box ke andar hi manage ho jaye */
+        transform: none !important;
+        z-index: 99 !important;
+        display: flex !important;
     }
-    .card{
-        height: 100%;
+
+    /* 🛑 CLOCK AUR WIDGETS KO MATHEMATICALLY QUOTE KE NICHE DHAKEL DIYA */
+    .container, .container.active {
+        position: absolute !important;
+        top: 220px !important; /* 👈 Yeh quote ki max height (180px) + space ko chhodkar clock ko neeche bithayega */
+        left: 5% !important;
+        width: 90% !important;
+        height: calc(100dvh - 240px) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        gap: 15px !important;
+        transform: none !important;
+    }
+
+    .container h1 {
+        font-size: 4.5em !important; 
+        text-align: center !important;
+        line-height: 1 !important;
+        margin: 0 !important;
+    }
+    
+    .container span {
+        font-size: 2.2em !important;
+        text-align: center !important;
+        padding-left: 0 !important;
+        margin-bottom: 5px;
+    }
+
+    .widget-container {
+        height: auto !important;
+        flex-direction: column !important;
+        gap: 15px !important;
+        overflow-y: auto !important;
+        padding-bottom: 20px;
+    }
+    
+    .card {
+        height: 120px !important;
+        flex-shrink: 0;
     }
 }

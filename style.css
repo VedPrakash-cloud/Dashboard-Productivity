@@ -356,7 +356,8 @@ option{
     }
     
     .container >span {
-        font-size: 3em;
+        font-size: 2.8em;
+        padding: 0;
         text-align: left;
     }
 
@@ -367,13 +368,18 @@ option{
         overflow-y: auto;
         padding-bottom: 20px;
     }
+
+    .modal-form{
+        width: 350px;
+    }
+    
     
     .card {
         height: 120px;
         flex-shrink: 0;
     }
 
-    .weather-main{
-        font-size: .7em;
+    .weather-main span{
+        font-size: clamp(1.5em, 5vw, 5em);
     }
 }

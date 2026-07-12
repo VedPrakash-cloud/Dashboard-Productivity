@@ -88,7 +88,6 @@ document.addEventListener("click", (e) => {
         showTimer = document.querySelector(".countDown");
       }
       showTimer.innerHTML = getCorrectTime();
-      pauseCheck();
     }
   }
 });

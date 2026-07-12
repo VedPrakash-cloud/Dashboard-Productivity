@@ -119,63 +119,60 @@ async function showWatch(customCity = null) {
             <span class="clock-date">${initialToday}</span>
             <div class="widget-container">
                 <div class="weather card">
-                  <h5 class="location">${weatherData.location.name}</h5>
-                  <div class="weather-main">
-                    <div style="display:flex; align-items:center; gap:10px;">
-                    <img src="${weatherData.current.condition.icon}" alt="${weatherData.current.condition.text}" />
-                    <h3>${weatherData.current.temp_c}<sup style="font-size:16px;">&deg;C</sup></h3>
+                    <h5 class="location">${weatherData.location.name}</h5>
+                    <div class="weather-main">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <img src="${weatherData.current.condition.icon}"
+                                alt="${weatherData.current.condition.text}" />
+                            <h3>${weatherData.current.temp_c}<sup style="font-size:16px;">&deg;C</sup></h3>
+                        </div>
+                        <span>${weatherData.current.condition.text}</span>
                     </div>
-                    <span>${weatherData.current.condition.text}</span>
-                  </div>
-                  <p class="weather-footer">See full forecast</p>
+                    <p class="weather-footer">See full forecast</p>
                 </div>
-                <div class="timer card"></div>
-                <div class="todo card"></div>
-                <div class="daily-planner card"></div>
+                <div class="timer card">
+                    <h5 class="watch-heading">Pomodoro Timer</h5>
+                    <div class="watch-container">
+                        <h3 class="countDown">${getCorrectTime()}</h3>
+                        <div class="watchBtn">
+                            <button class="pause"><i class="fa-regular fa-circle-pause"></i></button>
+                            <button class="timerBtn"><i class="fa-regular fa-circle-play"></i></button>
+                            <button class="stop"><i class="fa-regular fa-circle-xmark"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="todo card">
+                    <h3>ToDo List</h3>
+                </div>
+                <div class="daily-planner card">
+                    <h3>Pomodor Timero</h3>
+                </div>
             </div>
         </div>
         <div class="quotes"></div>
-    <div class="forcast-container">
-    <div class="modal-form">
-        <p class="closeBtn">X</p>
-        <div class="modal-nav">
-            <div class="left-side">
-                <input type="text" class="location-search" placeholder="Enter the city name..." value="${weatherData.location.name}">
-            </div>
-            <div class="right-side">
-                <select>
-                    <option value="">...</option>
-                    <option value="fahrenheit">Fahrenheit</option>
-                    <option value="celsius">Celsius</option>
-                </select>
-            </div>
-        </div>
-        <div class="temp">
-            <div style="display:flex; align-items:center; gap:5px;">
-              <img src="${weatherData.current.condition.icon}"/>
-              <h1>${weatherData.current.temp_c}<sup style="font-size:16px;">&deg;C</sup></h1>
-            </div>
-            <div class="high-low">
-                <span>${weatherData.current.will_it_rain}</span>
-                <span>H:${weatherData.current.feelslike_c}<sup style="font-size:12px;">&deg;C</sup> L:${weatherData.current.dewpoint_c}<sup style="font-size:12px;">&deg;C</sup></span>
+        <div class="forcast-container">
+            <div class="modal-form">
+                <p class="closeBtn">X</p>
+                <div class="modal-nav">
+                    <div class="left-side">
+                        <input type="text" id="city" class="location-search" placeholder="Enter the city name..."
+                            value="${weatherData.location.name}">
+                    </div>
+                    <div class="right-side">
+                        <select id="temperature" onchange='tempCheck(this.value)'>
+                            <option value="">...</option>
+                            <option value="fahrenheit">Fahrenheit</option>
+                            <option value="celsius">Celsius</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-container">
+                </div>
             </div>
         </div>
-        <div class="windy">
-            <div class="feel">
-                <p>Feels Like</p>
-                <p>${weatherData.current.feelslike_c}<sup style="font-size:16px;">&deg;C</sup></p>
-            </div>
-            <div class="wind">
-                <p>Wind</p>
-                <p>${weatherData.current.wind_kph}km/h</p>
-            </div>
-            <div class="humid">
-                <p>Humidity</p>
-                <p>${weatherData.current.humidity}</p>
-            </div>
+        <div class="watch-modal">
         </div>
-    </div>
-</div>`;
+        `;
 
   document.querySelector(".weather-footer").addEventListener("click", () => {
     const weatherContainer = document.querySelector(".forcast-container");
@@ -197,6 +194,42 @@ async function showWatch(customCity = null) {
         if (weatherContainer) weatherContainer.style.display = "flex";
       }
     });
+
+  let tapTemp = "celsius";
+
+  function tempCheck(val) {
+    tapTemp = val;
+    const unitSymbol = tapTemp == "celsius" ? "&deg;C" : "&deg;F";
+    document.querySelector(".modal-container").innerHTML = `<div class="temp">
+            <div style="display:flex; align-items:center; gap:5px;">
+              <img src="${weatherData.current.condition.icon}"/>
+              <h1>${tapTemp === "celsius" ? weatherData.current.temp_c : weatherData.current.temp_f}${unitSymbol}</h1>
+            </div>
+            <div class="high-low">
+                <span>${weatherData.current.chance_of_rain}</span>
+                <span>H:${tapTemp === "celsius" ? weatherData.current.feelslike_c : weatherData.current.feelslike_f}<sup style="font-size:12px;">${unitSymbol}</sup> L:${tapTemp === "celsius" ? weatherData.current.dewpoint_c : weatherData.current.dewpoint_f}<sup style="font-size:12px;">${unitSymbol}</sup></span>
+            </div>
+        </div>
+        <div class="windy">
+            <div class="feel">
+                <p>Feels Like</p>
+                <p>${tapTemp === "celsius" ? weatherData.current.feelslike_c : weatherData.current.feelslike_f}<sup style="font-size:16px;">${unitSymbol}</sup></p>
+            </div>
+            <div class="wind">
+                <p>Wind</p>
+                <p>${weatherData.current.wind_kph}km/h</p>
+            </div>
+            <div class="humid">
+                <p>Humidity</p>
+                <p>${weatherData.current.humidity}</p>
+            </div>
+        </div>
+    </div>`;
+  }
+
+  window.tempCheck = tempCheck;
+
+  tempCheck("celsius");
 
   const clockContainer = document.querySelector(".container");
   const clockTime = document.querySelector(".clock-time");
@@ -220,36 +253,43 @@ async function showWatch(customCity = null) {
   getQuotes();
 }
 
-async function getQuotes(){
-  try{
-    const res = await fetch("https://dummyjson.com/quotes?limit=0&skip=10")
-    
-    if(!res.ok){
+async function getQuotes() {
+  try {
+    const res = await fetch("https://dummyjson.com/quotes?limit=0&skip=10");
+
+    if (!res.ok) {
       throw new Error(`HTTP error! Status: ${res.status}`);
     }
     const data = await res.json();
-    const randomData = data.quotes.flat()
+    const randomData = data.quotes.flat();
     const randomIndex = Math.floor(Math.random() * randomData.length);
 
     const result = data.quotes[randomIndex];
 
-    const showQuotes = document.querySelector(".quotes")
+    const showQuotes = document.querySelector(".quotes");
 
     showQuotes.innerHTML = `<button class="refresh"><i class="fa-solid fa-arrow-rotate-left"></i></button>
     <div class="quote-container">
       <h3 class="quote-header">${result.quote}</h3>
       <p class="quote-author">${result.author}</p>
     </div>`;
-  }catch(err){
-    console.error("Unable to get Quotes today", err)
+  } catch (err) {
+    console.error("Unable to get Quotes today", err);
   }
 }
 
-main.addEventListener("click",(e)=>{
-  if(e.target.closest(".refresh")){
-    getQuotes()
+main.addEventListener("click", (e) => {
+  if (e.target.closest(".refresh")) {
+    getQuotes();
   }
-})
+  if (e.target.closest(".pause")) {
+    pauseCheck();
+  }
+  if (e.target.closest(".stop")) {
+    clearTimeRun();
+  }
+});
 
 showWatch();
+
 dynamicBackground();

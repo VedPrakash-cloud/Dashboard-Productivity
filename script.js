@@ -114,6 +114,8 @@ async function showWatch(customCity = null) {
 
   if (!weatherData) return;
 
+  const cardRendered = new CustomEvent("All cards rendered");
+
   main.innerHTML = `<div class="container">
             <h1 class="clock-time">${initialHours}:${initialMinutes}</h1>
             <span class="clock-date">${initialToday}</span>
@@ -141,11 +143,15 @@ async function showWatch(customCity = null) {
                         </div>
                     </div>
                 </div>
-                <div class="todo card">
-                    <h3>ToDo List</h3>
+                <div class="watch-modal"></div>
+                <div class="todo card"> 
+                  <h3 class="todoHeading"></h3>
+                  <div class="overview"></div>
+                  <div class="desktop-box"></div>
                 </div>
+                <div class="pandora-box"></div>
                 <div class="daily-planner card">
-                    <h3>Pomodor Timero</h3>
+                    <h3>Daily Planner</h3>
                 </div>
             </div>
         </div>
@@ -170,9 +176,9 @@ async function showWatch(customCity = null) {
                 </div>
             </div>
         </div>
-        <div class="watch-modal">
-        </div>
         `;
+
+        document.dispatchEvent(cardRendered);
 
   document.querySelector(".weather-footer").addEventListener("click", () => {
     const weatherContainer = document.querySelector(".forcast-container");
@@ -288,6 +294,7 @@ main.addEventListener("click", (e) => {
   if (e.target.closest(".stop")) {
     clearTimeRun();
   }
+  
 });
 
 showWatch();

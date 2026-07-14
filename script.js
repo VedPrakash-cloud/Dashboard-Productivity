@@ -151,8 +151,9 @@ async function showWatch(customCity = null) {
                 </div>
                 <div class="pandora-box"></div>
                 <div class="daily-planner card">
-                    <h3>Daily Planner</h3>
+                  <h3 class="planner-heading"></h3>
                 </div>
+                <div class="planner-pandora"></div>
             </div>
         </div>
         <div class="quotes"></div>

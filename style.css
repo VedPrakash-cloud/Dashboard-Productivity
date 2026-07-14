@@ -1,31 +1,34 @@
 /* ==========================================================================
    1. GLOBAL & BASE STYLING (Standard Setup)
    ========================================================================== */
-*{
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
-html{
+
+html {
     height: 100%;
 }
-body{
+
+body {
     min-height: 100dvh;
     height: auto;
     width: 100%;
 }
-main{
+
+main {
     width: 100%;
     height: 100dvh;
     overflow: hidden;
-    position: relative; 
+    position: relative;
 }
 
 /* ==========================================================================
    2. DESKTOP LAYOUT (Default styles)
    ========================================================================== */
-.container{
+.container {
     height: 100%;
     display: flex;
     padding: 0 40px;
@@ -35,11 +38,11 @@ main{
     transition: all 0.9s ease-in-out;
 }
 
-.container.active{
+.container.active {
     transform: translateY(0%);
 }
 
-.clock-time{
+.clock-time {
     font-size: 6em;
     font-weight: 400;
     line-height: .8;
@@ -47,57 +50,63 @@ main{
     text-shadow: 0 3px 10px #0000007c;
 }
 
-.container span{
+.container span {
     font-size: 4em;
     padding-left: 15px;
     color: #fff;
     text-shadow: 0 3px 10px #0000007c;
 }
 
-.widget-container{
+.widget-container {
     height: 200px;
     padding-top: 10px;
     display: flex;
     gap: 30px;
 }
 
-.card{
+.card {
     height: 140px;
     width: 100%;
     padding: 10px;
     border: 1px solid #b4b4b4a0;
     border-radius: 12px;
-    background-color:transparent;
+    background-color: transparent;
     box-shadow: inset 0 0 15px #d3d3d359;
     backdrop-filter: blur(2px);
     color: #fff;
-    
+    overflow: hidden;
+
 }
 
-.location, .watch-heading{
+.location,
+.watch-heading {
     font-size: 18px;
     color: #fff;
     text-shadow: 0 0 2px #00000037;
 }
 
-.weather-main{
+.weather-main {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    overflow: hidden;
 }
-.weather-main h3{
+
+.weather-main h3 {
     font-size: 3em;
     font-weight: 400;
     color: #fff;
     text-wrap: nowrap;
 }
-.weather-main span{
-    font-size: 1.2em;
+
+.weather-main span {
+    font-size: clamp(.5em, 1vw, 5em);
     font-weight: 400;
     color: #fff;
     text-shadow: none;
 }
-.weather-footer{
+
+.weather-footer {
     font-size: 14px;
     text-align: center;
     color: rgb(0, 136, 255);
@@ -106,7 +115,7 @@ main{
 }
 
 
-.quotes{
+.quotes {
     height: auto;
     width: 400px;
     position: absolute;
@@ -124,7 +133,7 @@ main{
     z-index: -1;
 }
 
-.refresh{
+.refresh {
     font-size: 20px;
     background: transparent;
     border: none;
@@ -133,18 +142,18 @@ main{
     color: #fff;
 }
 
-.refresh:active{
+.refresh:active {
     transform: rotateZ(-360deg);
 }
 
-.quote-header{
+.quote-header {
     font-size: 24px;
     color: #fff;
     text-shadow: 0 0 2px #000;
     font-weight: 600;
 }
 
-.quote-author{
+.quote-author {
     font-size: 13px;
     text-align: right;
     color: #fff;
@@ -152,7 +161,8 @@ main{
     font-weight: 600;
 }
 
-.forcast-container, .watch-modal{
+.forcast-container,
+.watch-modal {
     height: 100%;
     width: 100%;
     padding: 0 30px;
@@ -166,8 +176,9 @@ main{
     left: 0;
     z-index: 9999;
 }
-.modal-form{
-    background: linear-gradient(rgba(64, 60, 60, 0.668) 2%, rgba(252, 252, 252, 0.158) 100%),url(./assets/sunny.jpg);
+
+.modal-form {
+    background: linear-gradient(rgba(64, 60, 60, 0.668) 2%, rgba(252, 252, 252, 0.158) 100%), url(./assets/sunny.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: 100% 100%;
@@ -179,20 +190,25 @@ main{
     text-shadow: 0 0 2px #000;
     color: #fff;
 }
-.closeBtn{
+
+.closeBtn,
+.todoClose,
+.plannerClose {
     text-align: right;
     font-size: 22px;
     line-height: .7;
     font-weight: 550;
     cursor: pointer;
 }
-.modal-nav{
+
+.modal-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin: 15px 0;
 }
-.left-side{
+
+.left-side {
     padding: 5px;
     border-radius: 10px;
     background: transparent;
@@ -201,7 +217,7 @@ main{
     flex-direction: column;
 }
 
-.left-side input{
+.left-side input {
     border: none;
     font-size: 1.5em;
     font-weight: 600;
@@ -210,7 +226,7 @@ main{
     color: #fff;
 }
 
-.right-side select{
+.right-side select {
     border: none;
     outline: none;
     background: transparent;
@@ -220,29 +236,35 @@ main{
     text-shadow: 0 0 2px #000;
     color: #fff;
 }
-option{
+
+option {
     background-color: grey;
     padding: 10px 50px 5px 5px !important;
 }
-.temp{
+
+.temp {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
 }
-.temp h1{
+
+.temp h1 {
     font-size: 45px;
     font-weight: 500;
 }
-.high-low{
+
+.high-low {
     display: flex;
     flex-direction: column;
     text-align: right;
 }
-.news{
+
+.news {
     font-weight: 550;
 }
-.windy{
+
+.windy {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -252,7 +274,7 @@ option{
     font-weight: 550;
 }
 
-.watch-container{
+.watch-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -260,12 +282,14 @@ option{
     color: #fff;
 }
 
-.countDown{
-    font-size:2.5em;
+.countDown {
+    font-size: 2.5em;
     font-weight: 500;
 }
 
-.timerBtn, .pause, .stop{
+.timerBtn,
+.pause,
+.stop {
     background-color: transparent;
     border: none;
     font-size: 1.3em;
@@ -273,11 +297,14 @@ option{
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
 }
-.timerBtn:active, .pause:active, .stop:active{
+
+.timerBtn:active,
+.pause:active,
+.stop:active {
     transform: scale(.95);
 }
 
-.watch-form{
+.watch-form {
     background: transparent;
     background-position: center;
     background-repeat: no-repeat;
@@ -291,27 +318,28 @@ option{
     text-shadow: 0 0 2px #000;
     color: #fff;
 }
-.watch-close{
+
+.watch-close {
     width: 100%;
     text-align: right;
     cursor: pointer;
     font-size: 1.5em;
 }
 
-.watchModal-heading{
+.watchModal-heading {
     font-size: 1.8em;
     font-weight: 500;
 }
 
-.watchModal-container{
+.watchModal-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    font-size: 1.8em;   
+    font-size: 1.8em;
 }
 
-.pandora-box{
+.pandora-box {
     height: 100%;
     width: 100%;
     display: none;
@@ -327,7 +355,7 @@ option{
     text-transform: capitalize;
 }
 
-.todo-form{
+.todo-form {
     background-color: transparent;
     padding: 20px;
     height: 80%;
@@ -338,14 +366,14 @@ option{
     /* box-shadow: inset 5px 5px 20px #000; */
 }
 
-.todoNav{
-    margin: 10px 0 ;
+.todoNav {
+    margin: 10px 0;
     display: flex;
     justify-content: space-between;
     gap: 10px;
 }
 
-.list-note{
+.list-note {
     width: 100%;
     padding: 5px;
     border: 1px solid lightgray;
@@ -353,7 +381,7 @@ option{
     outline: none;
 }
 
-.add-list{
+.add-list {
     padding: 0 25px;
     background: rgb(0, 73, 162);
     border: none;
@@ -365,23 +393,44 @@ option{
     transition: all 0.3s ease-in-out;
 }
 
-.listData{
-    height: 84%;
-    overflow-y: auto;
-    scrollbar-width: none;
-}
-
-.add-list:active{
+.add-list:active {
     transform: scale(.95);
 }
 
-.todo-heading{
+.todo-heading {
     color: #fff;
     font-size: 1.5em;
 }
 
+.task-category {
+    display: flex;
+    flex-direction: column;
+    height: 82%;
+    overflow: hidden;
+}
 
-.list-items{
+
+.listData {
+    height: 50%;
+    overflow: auto;
+    scrollbar-width: none;
+}
+
+.showComplete {
+    height: 100%;
+    overflow: auto;
+    scrollbar-width: none;
+}
+
+.sorryMsg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+
+.list-items {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -392,12 +441,18 @@ option{
     padding: 5px;
 }
 
-.edit-task,.delete-task{
+.edit-task,
+.delete-task {
     background-color: transparent;
     border: none;
     cursor: pointer;
 }
-.overview{
+
+.delete-task {
+    color: rgb(242, 59, 120);
+}
+
+.overview {
     margin-top: 5px;
     text-transform: capitalize;
     font-size: .8em;
@@ -407,8 +462,128 @@ option{
     scrollbar-width: none;
 }
 
+.done-pills,
+.imp-pills {
+    background: transparent;
+    border: none;
+}
+
+.blank-star,
+.fa-check {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.list-items:hover .blank-star,
+.list-items:hover .fa-check {
+    opacity: 1;
+    visibility: visible;
+}
+
+.filled-star {
+    color: #f1c40f;
+}
+
+.fill-done{
+    color: #2ecc70;
+}
+
+.fa-check:hover {
+    color: #2ecc70;
+}
+
+.blank-star:hover {
+    color: #f1c40f;
+}
 
 
+.planner-pandora{
+    height: 100%;
+    width: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    backdrop-filter: blur(8px);
+    position: absolute;
+    padding: 40px 0;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    color: #fff;
+    text-transform: capitalize;
+}
+
+.blackhole{
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+    backdrop-filter: blur(5px);
+    padding: 30px;
+    height: 100%;
+    border: 1px solid rgb(127, 127, 127);
+    border-radius: 20px;
+    width: 80%;
+    box-shadow: inset 0 3px 50px #0000006c;
+}
+
+.taskStamp{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.slot{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    border: 1px solid rgb(127, 127, 127);
+    background: rgba(240, 248, 255, 0.199);
+    padding: 10px;
+    margin: 10px 0;
+    height: 130px;
+    border-radius: 10px;
+}
+.planner-container{
+    height: 100%;
+    overflow: auto;
+    scrollbar-width: none;
+}
+
+.timeslot{
+    border: 1px solid rgb(127,127,127);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15%;
+    border-radius: 10px;
+    text-shadow: 0 0 2px #000;
+}
+.notesslot{
+    border: 1px solid rgb(127,127,127);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    text-shadow: 0 0 2px #000;
+}
+
+.notesslot input{
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 0 20px;
+    font-size: 1.2em;
+    text-transform: capitalize;
+}
 
 
 /* ==========================================================================
@@ -418,8 +593,9 @@ option{
     main {
         margin: 0;
         height: 100dvh;
-        padding: 10px;  
-        display: block; /* Grid hata diya flexbox ki tarah move karne ke liye */
+        padding: 10px;
+        display: block;
+        /* Grid hata diya flexbox ki tarah move karne ke liye */
         position: relative;
     }
 
@@ -432,15 +608,16 @@ option{
         height: auto;
         max-height: 210px;
         overflow-y: auto;
-        transform: none ;
+        transform: none;
         z-index: 99;
     }
 
     /* 🛑 CLOCK AUR WIDGETS KO MATHEMATICALLY QUOTE KE NICHE DHAKEL DIYA */
-    .container, .container.active {
+    .container,
+    .container.active {
         position: absolute;
         top: 240px;
-        left: 5% ;
+        left: 5%;
         width: 90%;
         padding: 0;
         height: calc(100dvh - 270px);
@@ -450,11 +627,11 @@ option{
     }
 
     .clock-time {
-        font-size: 3.5em; 
+        font-size: 3.5em;
         text-align: left;
     }
-    
-    .container >span {
+
+    .container>span {
         font-size: 2.8em;
         padding: 0;
         text-align: left;
@@ -468,28 +645,59 @@ option{
         padding-bottom: 20px;
     }
 
-    .modal-form{
+    .modal-form {
         width: 350px;
     }
-    
-    
+
+
     .card {
         height: 120px;
         flex-shrink: 0;
     }
 
-    .weather-main span{
+    .weather-main span {
         font-size: clamp(1.5em, 5vw, 5em);
     }
 
-    .todo-form{
+    .todo-form {
         width: 100%;
         height: calc(100dvh - 280px);
         overflow: hidden;
         padding-bottom: 100px;
     }
-    .listData{
+
+    .listData {
         height: 100%;
         overflow: auto;
+    }
+    .slot{
+        height: 10%;
+        gap: 10px;
+        border-radius: 15px;
+    }
+    .timeslot{
+        width: 15%;
+        border-radius: 6px;
+        padding: 0 5px;
+        font-size: .7em;
+        text-shadow: 0 0 2px #000;
+    }
+    .notesslot{
+        font-size: .7em;
+    }
+
+    .blackhole{
+        display: flex;
+        flex-direction: column;
+        background-color: transparent;
+        backdrop-filter: blur(5px);
+        padding: 15px;
+        height: 100%;
+        border: 1px solid rgb(127, 127, 127);
+        border-radius: 20px;
+        width: 100%;
+        overflow: auto;
+        scrollbar-width: none;
+        box-shadow: inset 0 3px 50px #0000006c;
     }
 }

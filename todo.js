@@ -23,6 +23,7 @@ let listItem = [];
 function updateUi() {
   showList();
   taskOverview();
+  showComplete()
 }
 
 function taskOverview() {
@@ -47,13 +48,19 @@ function showList() {
   if (data) {
     data.innerHTML = listData
       .map((item) => {
-        return `<div class="list-items" data-id=${item.id}>
-            <h5 class="task-name">${item.task}</h5>
-            <div class="task-btn">
-                <button class="edit-task" onclick="handleEdit(${item.id})"><i class="fa-regular fa-pen-to-square"></i></button>
-                <button class="delete-task" onclick="handleDelete(${item.id})"><i class="fa-regular fa-trash-can"></i></button>
-            </div>
-            </div>`;
+        if(item.isComplete !== true){
+
+          return `<div class="list-items" data-id=${item.id}>
+                  <h5 class="task-name">${item.task}</h5>
+                  <div class="task-btn">
+                    <button class="imp-pills" onclick="handleImportant(${item.id})" title="Important" >${item.isImportant ? '<i class="fa-solid fa-star filled-star"></i>':'<i class="fa-regular fa-star blank-star"></i>'}</button>
+                    <button class="done-pills" title="Complete" onclick="handleComplete(${item.id})"><i class="fa-solid fa-check"></i></button>
+                    <button class="edit-task" onclick="handleEdit(${item.id})"><i class="fa-regular fa-pen-to-square"></i></button>
+                    <button class="delete-task" onclick="handleDelete(${item.id})"><i class="fa-regular fa-trash-can"></i></button>
+                  </div>
+                </div>
+            `;
+        }
       })
       .join("");
   }
@@ -66,16 +73,22 @@ function addTask() {
 
   pandora.innerHTML = `
     <div class="todo-form">
-            <p class="closeBtn">X</p>
+            <p class="todoClose">X</p>
             <h1 class="todo-heading">Add Task</h1>
             <div class="todoNav">
                 <input type="text" placeholder="Enter your list..." class="list-note">
                 <button class="add-list">Add</button>
             </div>
-            <div class="listData"></div>
+            <div class="task-category">
+              <div class="listData"></div>
+            <div class="movedList">
+            <h1 class="todo-heading">Completed Task</h1>
+            <div class="showComplete"></div>
+            </div>
+            </div>
         </div>
     `;
-  const closeBtn = document.querySelector(".closeBtn");
+  const closeBtn = document.querySelector(".todoClose");
 
   if (closeBtn) {
     closeBtn.addEventListener("click", () => (pandora.style.display = "none"));
@@ -100,6 +113,8 @@ function handleSubmit() {
     const obj = {
       id: Date.now(),
       task,
+      isImportant: false,
+      isComplete: false
     };
 
     listItem.push(obj);
@@ -116,6 +131,55 @@ function handleSubmit() {
 
     updateUi();
   });
+}
+
+function handleImportant(id){
+  const styleImp = document.querySelector(".task-name")
+  const markImp = JSON.parse(localStorage.getItem("task")) || [];
+
+  const updateImp = markImp.map((item)=>{
+    if(item.id === id){
+      return {...item, isImportant: !item.isImportant}
+    }
+    return item;
+  })
+  
+  localStorage.setItem("task", JSON.stringify(updateImp))
+  updateUi()
+}
+
+function handleComplete(id){
+  const markDone = JSON.parse(localStorage.getItem("task"));
+
+  const updateDone = markDone.map((item)=>{
+    if(item.id === id){
+      return {...item, isComplete: !item.isComplete}
+    }
+    return item;
+  })
+  localStorage.setItem("task", JSON.stringify(updateDone));
+  updateUi();
+}
+
+function showComplete(){
+  const completeList =document.querySelector(".showComplete");
+
+  const finishedList = JSON.parse(localStorage.getItem("task")) || [];
+
+  const filteredList = finishedList.filter((item)=> item.isComplete === true);
+  if(filteredList.length > 0){
+    completeList.innerHTML = filteredList.map((item)=>{
+      return `<div class="list-items" data-id=${item.id}>
+               <h5 class="task-name">${item.task}</h5>
+               <div class="task-btn">
+                   <button class="done-pills" title="Complete" onclick="handleComplete(${item.id})">${item.isComplete ? '<i class="fa-solid fa-check-double fill-done"></i>' : '<i class="fa-solid fa-check"></i>'}</button>
+                   <button class="delete-task" onclick="handleDelete(${item.id})"><i class="fa-regular fa-trash-can"></i></button>
+               </div>
+              </div>`
+    }).join("")
+  }else{
+    completeList.innerHTML = `<div class="sorryMsg"><p>Ah.... you have not completed any Task yet!!!😔</p></div>`
+  }
 }
 
 function handleEdit(id) {

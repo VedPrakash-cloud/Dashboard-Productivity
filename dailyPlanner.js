@@ -1,111 +1,155 @@
-document.addEventListener("All cards rendered", ()=>{
-    const plannerHeading = document.querySelector(".daily-planner");
-    const pandoraBox = document.querySelector(".planner-pandora");
+document.addEventListener("All cards rendered", () => {
+  const plannerHeading = document.querySelector(".daily-planner");
+  const pandoraBox = document.querySelector(".planner-pandora");
 
-    if(!plannerHeading || !pandoraBox) return;
+  if (!plannerHeading || !pandoraBox) return;
 
-    plannerHeading.innerHTML = `<h3 class="planner-heading">Daily Planner</h3>`;
+  plannerHeading.innerHTML = `<h3 class="planner-heading">Daily Planner</h3>`;
 
-    pandoraBox.innerHTML = `<div class="blackhole">
+  pandoraBox.innerHTML = `<div class="blackhole">
                                 <div class="taskStamp">
                                     <div class="dateTime"></div>
                                     <p class="plannerClose">X</p>
                                 </div>
                                 <div class="planner-container"></div>
-                            </div>`
+                            </div>`;
 
-    if(typeof Ui === 'function'){
-        Ui();
+  if (typeof Ui === "function" && typeof planOfAction === "function") {
+    Ui();
+    planOfAction();
+  }
+
+  plannerHeading.addEventListener("click", () => {
+    const pandoraBox = document.querySelector(".planner-pandora");
+    pandoraBox.style.display = "flex";
+
+    const now = new Date();
+    const hour = now.getHours().toString().padStart(2, "0");
+    const timeZone = `${hour}:00`;
+
+    const currentSlot = document.querySelector(
+      `.slot[data-hour="${timeZone}"]`,
+    );
+
+    if (currentSlot) {
+      currentSlot.scrollIntoView({ behavior: "smooth", block: "center" });
+      currentSlot.style.backgroundColor = "#00346eb3";
     }
+  });
 
-    plannerHeading.addEventListener("click", ()=>{
-        const pandoraBox = document.querySelector(".planner-pandora");
-        pandoraBox.style.display = "flex";
+  const closePandora = document.querySelector(".plannerClose");
 
-        const now =new Date();
-        const hour = now.getHours().toString().padStart(2,'0');
-        const timeZone = `${hour}:00`;
-
-        const currentSlot = document.querySelector(`.slot[data-hour="${timeZone}"]`);
-
-        if(currentSlot) {
-            currentSlot.scrollIntoView({behavior:"smooth", block: "center"});
-        }
-    })
-
-    const closePandora = document.querySelector(".plannerClose");
-
-    if(closePandora){
-        closePandora.addEventListener("click", ()=>{
-            const pandoraBox = document.querySelector(".planner-pandora");
-            pandoraBox.style.display = "none";
-        })
-    }
-
-})
+  if (closePandora) {
+    closePandora.addEventListener("click", () => {
+      const pandoraBox = document.querySelector(".planner-pandora");
+      pandoraBox.style.display = "none";
+    });
+  }
+});
 
 let dailyPlan = [];
-function timeIndex(){
-    let timeRange = [];
-    let min = 0;
-    for(let i = 0; i < 24; i++){
-        timeRange.push(`${i.toString().padStart(2,'0')}:${min.toString().padStart(2, '0')}`);
-    }
-    return timeRange;
+function timeIndex() {
+  let timeRange = [];
+  let min = 0;
+  for (let i = 0; i < 24; i++) {
+    timeRange.push(
+      `${i.toString().padStart(2, "0")}:${min.toString().padStart(2, "0")}`,
+    );
+  }
+  return timeRange;
 }
 
 const time = timeIndex();
 
-function Ui(){
-    const dateTime = document.querySelector(".dateTime")
-    if(!dateTime) return;
+function Ui() {
+  const dateTime = document.querySelector(".dateTime");
+  if (!dateTime) return;
 
-    const initialNow = new Date();
-    const initialHours = initialNow.getHours();
-    const displayHour = initialHours % 12;
-    const initialMinutes = initialNow.getMinutes().toString().padStart(2, "0");
-    const option = { weekday: "long", day: "numeric", month: "long" };
-    const initialToday = new Date().toLocaleDateString("en-US", option);
+  const initialNow = new Date();
+  const initialHours = initialNow.getHours();
+  const displayHour = initialHours % 12;
+  const initialMinutes = initialNow.getMinutes().toString().padStart(2, "0");
+  const option = { weekday: "long", day: "numeric", month: "long" };
+  const initialToday = new Date().toLocaleDateString("en-US", option);
 
-    if(displayHour === 0){
-        displayHour = 12;
-    }
+  if (displayHour === 0) {
+    displayHour = 12;
+  }
 
-    const ampm = initialHours >= 12 ? "PM" : "AM";
-    
-    dateTime.innerHTML = `<h1>${displayHour.toString().padStart(2,'0')}:${initialMinutes} ${ampm}</h1>
-                        <h3>${initialToday}</h3>`
+  const ampm = initialHours >= 12 ? "PM" : "AM";
 
-    const container = document.querySelector(".planner-container");
-    if(!container) return;
+  dateTime.innerHTML = `<h1>${displayHour.toString().padStart(2, "0")}:${initialMinutes} ${ampm}</h1>
+                        <h3>${initialToday}</h3>`;
 
-    if(container){
-        container.innerHTML = time.map((item)=>{
+  const container = document.querySelector(".planner-container");
+  if (!container) return;
+
+  if (container) {
+    container.innerHTML = time
+      .map((item) => {
         return `<div class="slot" data-hour='${item}'>
             <div class="timeslot">
-                ${item < "12:00" ? `<p>${item} AM</p>`:`<p>${item} PM</p>`}
+                ${item < "12:00" ? `<p>${item} AM</p>` : `<p>${item} PM</p>`}
             </div>
             <div class="notesslot">
                 <input type="text" class="planText" placeholder="what is your plan for today....">
+                <div class="showPlanner">
+                    <p class="actionPlan"></p>
+                    <button class="plannerEdit">Edit</button>
+                    <button class="plannerDel">Delete</button>
+                </div>
             </div>
-            </div>`
-    }).join("");
-    }
+            </div>`;
+      })
+      .join("");
+  }
 }
 
+function planOfAction() {
+  const container = document.querySelector(".planner-container");
+  if (!container) return;
 
-// function planner(){
-//     const planOfAction = document.querySelector(".planText");
+  if (container) {
+    container.addEventListener("change", (e) => {
+      if (e.target.classList.contains("planText")) {
+        const timeSlot = e.target.closest(".slot");
+        if (timeSlot) {
+          const hour = timeSlot.getAttribute("data-hour");
+          const userPlan = e.target.value;
+          if (userPlan.trim() !== "") {
+            saveToLs(hour, userPlan.trim());
+          }
+        }
+      }
+    });
+  }
+}
 
-//     if(!planOfAction) return;
+function saveToLs(hour, plan) {
+  if (hour && plan) {
+    let obj = {
+      hour,
+      plan,
+    };
+    let oldData = JSON.parse(localStorage.getItem("PlanOfAction")) || [];
+    oldData.push(obj);
+    localStorage.setItem("PlanOfAction", JSON.stringify(oldData));
+  }
+    const container = document.querySelector(".planner-container");
+    if (!container) return;
 
-//     if(planOfAction){
-//         planOfAction.addEventListener("change", ()=>{
-        
-//     })
-//     }
-// }
-
-
-
-
+      container.addEventListener("change", (e) => {
+        if (e.target.classList.contains("planText")) {
+          const timeSlot = e.target.closest(".slot");
+          if (timeSlot) {
+            const planInput = timeSlot.querySelector(".planText");
+            const showPlanner = timeSlot.querySelector(".showPlanner");
+            
+            if(planInput && showPlanner){
+                planInput.style.display = "none";
+                showPlanner.style.display = "flex";
+            }
+          }
+        }
+      });
+    }

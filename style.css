@@ -576,13 +576,18 @@ option {
     text-shadow: 0 0 2px #000;
 }
 
-.notesslot input{
+.planText{
+    display: flex;
     width: 100%;
     border: none;
     outline: none;
     padding: 0 20px;
     font-size: 1.2em;
     text-transform: capitalize;
+}
+
+.showPlanner{
+    display: none;
 }
 
 

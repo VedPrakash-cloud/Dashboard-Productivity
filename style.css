@@ -339,7 +339,7 @@ option {
     font-size: 1.8em;
 }
 
-.pandora-box {
+.pandora-box, .planner-pandora {
     height: 100%;
     width: 100%;
     display: none;
@@ -363,7 +363,6 @@ option {
     width: 50%;
     border-radius: 10px;
     overflow: hidden;
-    /* box-shadow: inset 5px 5px 20px #000; */
 }
 
 .todoNav {
@@ -500,95 +499,94 @@ option {
     color: #f1c40f;
 }
 
-
-.planner-pandora{
-    height: 100%;
-    width: 100%;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    backdrop-filter: blur(8px);
-    position: absolute;
-    padding: 40px 0;
-    top: 0;
-    left: 0;
-    z-index: 9999;
-    color: #fff;
-    text-transform: capitalize;
-}
-
 .blackhole{
-    display: flex;
-    flex-direction: column;
-    background-color: transparent;
-    backdrop-filter: blur(5px);
-    padding: 30px;
-    height: 100%;
-    border: 1px solid rgb(127, 127, 127);
-    border-radius: 20px;
-    width: 80%;
-    box-shadow: inset 0 3px 50px #0000006c;
-}
-
-.taskStamp{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.slot{
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    width: 100%;
-    border: 1px solid rgb(127, 127, 127);
-    background: rgba(240, 248, 255, 0.199);
-    padding: 10px;
-    margin: 10px 0;
-    height: 130px;
+    background: transparent;
+    box-shadow: inset 0 0 10px #000000;
+    height: 70%;
+    width: 70%;
+    padding: 5px;
     border-radius: 10px;
+    display: flex;
+    gap: 5px;
 }
-.planner-container{
+.leftSide-container{
+    background: rgba(119, 136, 153, 0.623);
+    padding: 20px;
+    border-radius: 10px;
+    width: 35%;
+    overflow: hidden;
+}
+
+.pendingTask{
+    display: flex;
+    height: calc(100% - 55px);
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.pendingTask select{
+    padding: 5px;
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+    outline: none;
+    font-weight: 500;
+    font-size: 1em;
+    color: #fff;
+    background-color: transparent;
+}
+
+.pendingTask option{
+    background-color: rgba(143, 157, 170, 0.366);
+    font-weight: 500;
+    font-size: 1em;
+    color: lightslategray;
+}
+
+.agenda{
+    height: 100%;
+    border-radius: 5px;
+    border: 1px solid lightgrey;
+    outline: none;
+    background: transparent;
+    padding: 10px;
+    color: #fff;
+}
+
+.agenda::placeholder{
+    color: #fff;
+}
+.addPlan{
+    padding: 10px 0;
+    border: none;
+    border-radius: 10px;
+    background: rgb(1, 47, 138);
+    color: #fff;
+    font-weight: 500;
+    font-size: 1em;
+    cursor: pointer;
+    transition: scale 0.3s ease-in-out;
+}
+
+.addPlan:active{
+    transform: scale(.95);
+}
+
+.day-time{
+    text-shadow: 0 0 2px #000000a2;
+    margin-bottom: 10px;
+}
+.rightSide-container{
+    background: rgba(119, 136, 153, 0.623);
+    padding: 20px;
+    border-radius: 10px;
+    width: 65%;
     height: 100%;
     overflow: auto;
     scrollbar-width: none;
 }
 
-.timeslot{
-    border: 1px solid rgb(127,127,127);
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 15%;
-    border-radius: 10px;
-    text-shadow: 0 0 2px #000;
-}
-.notesslot{
-    border: 1px solid rgb(127,127,127);
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    border-radius: 10px;
-    overflow: hidden;
-    text-shadow: 0 0 2px #000;
-}
 
-.planText{
-    display: flex;
-    width: 100%;
-    border: none;
-    outline: none;
-    padding: 0 20px;
-    font-size: 1.2em;
-    text-transform: capitalize;
-}
-
-.showPlanner{
-    display: none;
-}
 
 
 /* ==========================================================================
@@ -675,34 +673,5 @@ option {
         height: 100%;
         overflow: auto;
     }
-    .slot{
-        height: 10%;
-        gap: 10px;
-        border-radius: 15px;
-    }
-    .timeslot{
-        width: 15%;
-        border-radius: 6px;
-        padding: 0 5px;
-        font-size: .7em;
-        text-shadow: 0 0 2px #000;
-    }
-    .notesslot{
-        font-size: .7em;
-    }
-
-    .blackhole{
-        display: flex;
-        flex-direction: column;
-        background-color: transparent;
-        backdrop-filter: blur(5px);
-        padding: 15px;
-        height: 100%;
-        border: 1px solid rgb(127, 127, 127);
-        border-radius: 20px;
-        width: 100%;
-        overflow: auto;
-        scrollbar-width: none;
-        box-shadow: inset 0 3px 50px #0000006c;
-    }
+    
 }

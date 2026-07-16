@@ -7,149 +7,106 @@ document.addEventListener("All cards rendered", () => {
   plannerHeading.innerHTML = `<h3 class="planner-heading">Daily Planner</h3>`;
 
   pandoraBox.innerHTML = `<div class="blackhole">
-                                <div class="taskStamp">
-                                    <div class="dateTime"></div>
-                                    <p class="plannerClose">X</p>
-                                </div>
-                                <div class="planner-container"></div>
+                                <div class="leftSide-container"></div>
+                                <div class="rightSide-container"></div>
                             </div>`;
 
-  if (typeof Ui === "function" && typeof planOfAction === "function") {
-    Ui();
-    planOfAction();
+  if (typeof ui === 'function' && typeof handleOutput === 'function') {
+    ui();
+    handleOutput();
   }
 
   plannerHeading.addEventListener("click", () => {
-    const pandoraBox = document.querySelector(".planner-pandora");
     pandoraBox.style.display = "flex";
-
-    const now = new Date();
-    const hour = now.getHours().toString().padStart(2, "0");
-    const timeZone = `${hour}:00`;
-
-    const currentSlot = document.querySelector(
-      `.slot[data-hour="${timeZone}"]`,
-    );
-
-    if (currentSlot) {
-      currentSlot.scrollIntoView({ behavior: "smooth", block: "center" });
-      currentSlot.style.backgroundColor = "#00346eb3";
-    }
   });
-
-  const closePandora = document.querySelector(".plannerClose");
-
-  if (closePandora) {
-    closePandora.addEventListener("click", () => {
-      const pandoraBox = document.querySelector(".planner-pandora");
-      pandoraBox.style.display = "none";
-    });
-  }
 });
 
-let dailyPlan = [];
-function timeIndex() {
-  let timeRange = [];
-  let min = 0;
-  for (let i = 0; i < 24; i++) {
-    timeRange.push(
-      `${i.toString().padStart(2, "0")}:${min.toString().padStart(2, "0")}`,
-    );
-  }
-  return timeRange;
-}
+function ui(){
+  let timeslot = ["00:00 AM", "01:00 AM", "02:00 AM", "03:00 AM","04:00 AM", "05:00 AM", "06:00 AM", "07:00 AM", "08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM", "06:00 PM", "07:00 PM", "08:00 PM", "09:00 PM", "10:00 PM", "11:00 PM"]
 
-const time = timeIndex();
 
-function Ui() {
-  const dateTime = document.querySelector(".dateTime");
-  if (!dateTime) return;
+  const leftContainer = document.querySelector(".leftSide-container");
+  
 
   const initialNow = new Date();
-  const initialHours = initialNow.getHours();
-  const displayHour = initialHours % 12;
-  const initialMinutes = initialNow.getMinutes().toString().padStart(2, "0");
-  const option = { weekday: "long", day: "numeric", month: "long" };
-  const initialToday = new Date().toLocaleDateString("en-US", option);
+        const initialHours = initialNow.getHours();
+        let displayHour = initialHours % 12;
+        const initialMinutes = initialNow.getMinutes();
+        const option = { weekday: "long", day: "numeric", month: "long" };
+        const initialToday = new Date().toLocaleDateString("en-US", option);
 
-  if (displayHour === 0) {
-    displayHour = 12;
+        if (displayHour === 0) {
+          displayHour = 12;
+        }
+
+        const ampm = initialHours >= 12 ? "PM" : "AM";
+
+  if(!leftContainer) return;
+
+  if(leftContainer){
+    leftContainer.innerHTML = `
+    <div class="day-time">
+      <h2>${displayHour.toString().padStart(2, "0")}:${initialMinutes.toString().padStart(2, "0")} ${ampm}</h2>
+      <h3>${initialToday}</h3>
+    </div>
+    <form class="pendingTask">
+      <select class = "hourSpan">
+        ${timeslot.map((times)=>(
+          `<option value ="${times}">${times}</option>`
+        )).join("")}
+      </select>
+      <textarea type="text" placeholder="Enter your plan for the day..." class="agenda"></textarea>
+      <button type="submit" class="addPlan">Add</button>
+    </form>
+  `
+  
   }
 
-  const ampm = initialHours >= 12 ? "PM" : "AM";
-
-  dateTime.innerHTML = `<h1>${displayHour.toString().padStart(2, "0")}:${initialMinutes} ${ampm}</h1>
-                        <h3>${initialToday}</h3>`;
-
-  const container = document.querySelector(".planner-container");
-  if (!container) return;
-
-  if (container) {
-    container.innerHTML = time
-      .map((item) => {
-        return `<div class="slot" data-hour='${item}'>
-            <div class="timeslot">
-                ${item < "12:00" ? `<p>${item} AM</p>` : `<p>${item} PM</p>`}
-            </div>
-            <div class="notesslot">
-                <input type="text" class="planText" placeholder="what is your plan for today....">
-                <div class="showPlanner">
-                    <p class="actionPlan"></p>
-                    <button class="plannerEdit">Edit</button>
-                    <button class="plannerDel">Delete</button>
-                </div>
-            </div>
-            </div>`;
-      })
-      .join("");
+  if(leftContainer){
+    handleFormSubmit();
   }
 }
 
-function planOfAction() {
-  const container = document.querySelector(".planner-container");
-  if (!container) return;
+function handleFormSubmit(){
+  const formSubmit = document.querySelector(".pendingTask");
+  const hour = document.querySelector(".hourSpan");
+  const inputText = document.querySelector(".agenda")
 
-  if (container) {
-    container.addEventListener("change", (e) => {
-      if (e.target.classList.contains("planText")) {
-        const timeSlot = e.target.closest(".slot");
-        if (timeSlot) {
-          const hour = timeSlot.getAttribute("data-hour");
-          const userPlan = e.target.value;
-          if (userPlan.trim() !== "") {
-            saveToLs(hour, userPlan.trim());
-          }
-        }
-      }
-    });
-  }
-}
-
-function saveToLs(hour, plan) {
-  if (hour && plan) {
-    let obj = {
-      hour,
-      plan,
-    };
-    let oldData = JSON.parse(localStorage.getItem("PlanOfAction")) || [];
-    oldData.push(obj);
-    localStorage.setItem("PlanOfAction", JSON.stringify(oldData));
-  }
-    const container = document.querySelector(".planner-container");
-    if (!container) return;
-
-      container.addEventListener("change", (e) => {
-        if (e.target.classList.contains("planText")) {
-          const timeSlot = e.target.closest(".slot");
-          if (timeSlot) {
-            const planInput = timeSlot.querySelector(".planText");
-            const showPlanner = timeSlot.querySelector(".showPlanner");
-            
-            if(planInput && showPlanner){
-                planInput.style.display = "none";
-                showPlanner.style.display = "flex";
-            }
-          }
-        }
-      });
+  formSubmit.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    if(inputText.value.trim() === "") return;
+    let obj ={
+      id: Date.now(),
+      time:hour.value,
+      agenda:inputText.value
     }
+    const oldTask = JSON.parse(localStorage.getItem("planOfAction")) || [];
+    oldTask.push(obj);
+    localStorage.setItem("planOfAction", JSON.stringify(oldTask));
+    inputText.value =""
+    hour.selectedIndex = 0;
+    handleOutput();
+  })
+}
+
+function handleOutput(){
+  const rightContainer = document.querySelector(".rightSide-container");
+  const taskList = JSON.parse(localStorage.getItem("planOfAction")) || [];
+  
+  if(!rightContainer) return;
+
+  if(rightContainer){
+    rightContainer.innerHTML =taskList.map((listItem)=>(
+      `<div class="agenda-panel" data-id=${listItem.id}>
+          <div class="panelOutput">
+            <h4>${listItem.time}</h4>
+            <p>${listItem.agenda}</p>
+          </div>
+          <div class="panelBtn">
+            <button class="editPanel">Edit</button>
+            <button class="delPanel">Delete</button>
+          </div>
+      </div>`
+    )).join("")
+  }
+}

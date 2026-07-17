@@ -500,14 +500,35 @@ option {
 }
 
 .blackhole{
-    background: transparent;
-    box-shadow: inset 0 0 10px #000000;
     height: 70%;
     width: 70%;
-    padding: 5px;
-    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.boxes{
     display: flex;
     gap: 5px;
+    height: 100%;
+}
+.plannerHead{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    background: rgba(119, 136, 153, 0.623);
+    border-radius: 10px;
+}
+.plannerClose{
+    font-size: 1.5em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: scale 0.3s ease-in-out;
+}
+
+.plannerClose:active{
+    transform: scale(.90);
 }
 .leftSide-container{
     background: rgba(119, 136, 153, 0.623);
@@ -519,7 +540,7 @@ option {
 
 .pendingTask{
     display: flex;
-    height: calc(100% - 55px);
+    height: 100%;
     flex-direction: column;
     justify-content: space-between;
     gap: 10px;
@@ -584,8 +605,67 @@ option {
     height: 100%;
     overflow: auto;
     scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    scroll-behavior: smooth;
 }
 
+.agenda-panel{
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    background: transparent;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 5px 5px #4c4c4ca6;
+}
+
+.panelOutput{
+    width: 100%;
+}
+
+.panelBtn{
+    display: flex;
+    gap: 20px;
+    align-items: end;
+}
+
+.editPanel{
+    padding: 2px 15px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: scale 0.3s ease-in-out;
+    background-color: goldenrod;
+    color: #fff;
+    box-shadow: 0 5px 5px #4c4c4ca6;
+}
+.delPanel{
+    padding: 2px 15px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: scale 0.3s ease-in-out;
+    background-color: red;
+    color: #fff;
+    box-shadow: 0 5px 5px #4c4c4ca6;
+}
+
+.editPanel:active, .delPanel:active{
+    transform: scale(.95);
+}
+
+.editable{
+    background: transparent;
+    outline: none;
+    border: none;
+    color: #fff;
+    width: 100%;
+    font-size: 1em;
+}
 
 
 

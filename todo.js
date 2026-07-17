@@ -218,7 +218,5 @@ function handleDelete(id) {
 
   localStorage.setItem("task", JSON.stringify(newList));
 
-  const checkNewList = JSON.parse(localStorage.getItem("task")) || [];
-
   updateUi();
 }

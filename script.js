@@ -3,6 +3,27 @@ const main = document.querySelector("main");
 
 const rightNow = new Date().getHours();
 
+const initTheme = () => {
+  const savedTheme = localStorage.getItem("theme") || "dark";
+  document.documentElement.setAttribute("data-theme", savedTheme);
+};
+
+const toggleTheme = () => {
+  const currentTheme = document.documentElement.getAttribute("data-theme");
+  const newTheme = currentTheme === "light" ? "dark" : "light";
+  
+  document.documentElement.setAttribute("data-theme", newTheme);
+  localStorage.setItem("theme", newTheme);
+
+  const themeBtnIcon = document.querySelector(".theme-toggle-btn i");
+  if (themeBtnIcon) {
+    themeBtnIcon.className = newTheme === "light" ? "fa-solid fa-moon" : "fa-solid fa-sun";
+  }
+};
+
+initTheme();
+
+
 const randomPhoto = async (query) => {
   try {
     const res = await fetch(
@@ -11,7 +32,7 @@ const randomPhoto = async (query) => {
         headers: {
           Authorization: `Client-ID cD7tUaaG_dpZ5g_zg-7OXnv_W38ItaN2p8Z6-dgmn0s`,
         },
-      },
+      }
     );
     if (!res.ok) {
       throw new Error(`HTTP error! Status: ${res.status}`);
@@ -31,7 +52,7 @@ const randomPhoto = async (query) => {
     body.style.backgroundSize = "100% 100%";
     body.style.backgroundRepeat = "no-repeat";
   } catch (err) {
-    console.error("Unable to fetch", err);
+    console.error("Unable to fetch background", err);
   }
 };
 
@@ -63,7 +84,7 @@ const getLocation = () => {
       },
       (error) => {
         rej(error);
-      },
+      }
     );
   });
 };
@@ -72,7 +93,7 @@ const weather = async (query) => {
   const apiKey = "48c30176b2064b6e86b111614251804";
   try {
     const response = await fetch(
-      `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${query}`,
+      `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${query}`
     );
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -116,9 +137,18 @@ async function showWatch(customCity = null) {
 
   const cardRendered = new CustomEvent("All cards rendered");
 
+  const currentTheme = document.documentElement.getAttribute("data-theme");
+  const themeIconClass = currentTheme === "light" ? "fa-solid fa-moon" : "fa-solid fa-sun";
+
   main.innerHTML = `<div class="container">
+            <!-- Theme Toggle Button Top Right -->
+            <button class="theme-toggle-btn" title="Toggle Theme" style="position: absolute; top: 20px; right: 20px; background: var(--glass-bg); border: var(--glass-border); padding: 10px 14px; border-radius: 50%; color: var(--text-primary); cursor: pointer; backdrop-filter: var(--glass-blur); z-index: 100;">
+                <i class="${themeIconClass}"></i>
+            </button>
+
             <h1 class="clock-time">${initialHours}:${initialMinutes}</h1>
             <span class="clock-date">${initialToday}</span>
+            <div class="quotes"></div>
             <div class="widget-container">
                 <div class="weather card">
                     <h5 class="location">${weatherData.location.name}</h5>
@@ -135,7 +165,7 @@ async function showWatch(customCity = null) {
                 <div class="timer card">
                     <h5 class="watch-heading">Pomodoro Timer</h5>
                     <div class="watch-container">
-                        <h3 class="countDown">${getCorrectTime()}</h3>
+                        <h3 class="countDown">${typeof getCorrectTime === 'function' ? getCorrectTime() : '25:00'}</h3>
                         <div class="watchBtn">
                             <button class="pause"><i class="fa-regular fa-circle-pause"></i></button>
                             <button class="timerBtn"><i class="fa-regular fa-circle-play"></i></button>
@@ -144,19 +174,14 @@ async function showWatch(customCity = null) {
                     </div>
                 </div>
                 <div class="watch-modal"></div>
-                <div class="todo card"> 
-                  <h3 class="todoHeading"></h3>
-                  <div class="overview"></div>
-                  <div class="desktop-box"></div>
-                </div>
+                <div class="todo card"></div>
                 <div class="pandora-box"></div>
-                <div class="daily-planner card">
-                  <h3 class="planner-heading"></h3>
-                </div>
+                <div class="daily-planner card"></div>
                 <div class="planner-pandora"></div>
+                <div class="daily-goal card"></div>
+                <div class="goal-pandora"></div>
             </div>
         </div>
-        <div class="quotes"></div>
         <div class="forcast-container">
             <div class="modal-form">
                 <p class="closeBtn">X</p>
@@ -173,13 +198,13 @@ async function showWatch(customCity = null) {
                         </select>
                     </div>
                 </div>
-                <div class="modal-container">
-                </div>
+                // <div class="modal-container">
+                // </div>
             </div>
         </div>
         `;
 
-        document.dispatchEvent(cardRendered);
+  document.dispatchEvent(cardRendered);
 
   document.querySelector(".weather-footer").addEventListener("click", () => {
     const weatherContainer = document.querySelector(".forcast-container");
@@ -213,7 +238,7 @@ async function showWatch(customCity = null) {
               <h1>${tapTemp === "celsius" ? weatherData.current.temp_c : weatherData.current.temp_f}${unitSymbol}</h1>
             </div>
             <div class="high-low">
-                <span>${weatherData.current.chance_of_rain}</span>
+                <span>${weatherData.current.chance_of_rain || ''}</span>
                 <span>H:${tapTemp === "celsius" ? weatherData.current.feelslike_c : weatherData.current.feelslike_f}<sup style="font-size:12px;">${unitSymbol}</sup> L:${tapTemp === "celsius" ? weatherData.current.dewpoint_c : weatherData.current.dewpoint_f}<sup style="font-size:12px;">${unitSymbol}</sup></span>
             </div>
         </div>
@@ -235,7 +260,6 @@ async function showWatch(customCity = null) {
   }
 
   window.tempCheck = tempCheck;
-
   tempCheck("celsius");
 
   const clockContainer = document.querySelector(".container");
@@ -257,7 +281,43 @@ async function showWatch(customCity = null) {
   setTimeout(() => {
     if (clockContainer) clockContainer.classList.add("active");
   }, 1000);
-  getQuotes();
+
+  fetchAndRenderQuotes();
+}
+
+
+function showQuotesLoading() {
+  const showQuotes = document.querySelector(".quotes");
+  if (!showQuotes) return;
+
+  showQuotes.innerHTML = `
+    <button class="refresh" disabled><i class="fa-solid fa-arrow-rotate-left fa-spin"></i></button>
+    <div class="quote-container">
+      <h3 class="quote-header">Loading quote...</h3>
+      <p class="quote-author">Please wait</p>
+    </div>`;
+}
+
+function showQuotesError(errorMessage = "Unable to load quote") {
+  const showQuotes = document.querySelector(".quotes");
+  if (!showQuotes) return;
+
+  showQuotes.innerHTML = `
+    <button class="refresh"><i class="fa-solid fa-arrow-rotate-left"></i></button>
+    <div class="quote-container">
+      <h3 class="quote-header" style="color: #ef4444;">${errorMessage}</h3>
+      <p class="quote-author">Try again later</p>
+    </div>`;
+}
+
+async function fetchAndRenderQuotes() {
+  showQuotesLoading();
+  
+  try {
+    await getQuotes();
+  } catch (err) {
+    showQuotesError("Failed to fetch quotes. Please check your connection.");
+  }
 }
 
 async function getQuotes() {
@@ -275,29 +335,35 @@ async function getQuotes() {
 
     const showQuotes = document.querySelector(".quotes");
 
-    showQuotes.innerHTML = `<button class="refresh"><i class="fa-solid fa-arrow-rotate-left"></i></button>
-    <div class="quote-container">
-      <h3 class="quote-header">${result.quote}</h3>
-      <p class="quote-author">${result.author}</p>
-    </div>`;
+    if (showQuotes) {
+      showQuotes.innerHTML = `<button class="refresh"><i class="fa-solid fa-arrow-rotate-left"></i></button>
+      <div class="quote-container">
+        <h3 class="quote-header">${result.quote}</h3>
+        <p class="quote-author">${result.author}</p>
+      </div>`;
+    }
   } catch (err) {
     console.error("Unable to get Quotes today", err);
+    showQuotesError("Unable to get Quotes today");
   }
 }
 
 main.addEventListener("click", (e) => {
   if (e.target.closest(".refresh")) {
-    getQuotes();
-  }
-  if (e.target.closest(".pause")) {
-    pauseCheck();
-  }
-  if (e.target.closest(".stop")) {
-    clearTimeRun();
+    fetchAndRenderQuotes();
   }
   
+  if (e.target.closest(".theme-toggle-btn")) {
+    toggleTheme();
+  }
+
+  if (e.target.closest(".pause")) {
+    if (typeof pauseCheck === 'function') pauseCheck();
+  }
+  if (e.target.closest(".stop")) {
+    if (typeof clearTimeRun === 'function') clearTimeRun();
+  }
 });
 
 showWatch();
-
 dynamicBackground();

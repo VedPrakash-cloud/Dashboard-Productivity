@@ -4,7 +4,9 @@ document.addEventListener("All cards rendered", () => {
 
   if (!plannerHeading || !pandoraBox) return;
 
-  plannerHeading.innerHTML = `<h3 class="planner-heading">Daily Planner</h3>`;
+  plannerHeading.innerHTML = `<h3 class="planner-heading">Daily Planner</h3>
+                              <div class="plannerOverview"></div>
+                              `;
 
   const initialNow = new Date();
         const initialHours = initialNow.getHours();
@@ -33,9 +35,10 @@ document.addEventListener("All cards rendered", () => {
                                 </div>
                             </div>`;
 
-  if (typeof ui === 'function' && typeof handleOutput === 'function') {
+  if (typeof ui === 'function' && typeof handleOutput === 'function' && typeof plannerOverview === 'function') {
     ui();
     handleOutput();
+    plannerOverview();
   }
 
   plannerHeading.addEventListener("click", () => {
@@ -69,6 +72,7 @@ function ui(){
     </form>
   `
   handleFormSubmit();
+  plannerOverview();
   }
 }
 
@@ -91,6 +95,7 @@ function handleFormSubmit(){
     inputText.value =""
     hour.selectedIndex = 0;
     handleOutput();
+    plannerOverview();
   })
 }
 
@@ -123,6 +128,7 @@ function handleDelete(id){
 
   localStorage.setItem("planOfAction", JSON.stringify(updatedList));
   handleOutput();
+  plannerOverview();
 }
 
 function handleEdit(e,id){
@@ -150,6 +156,20 @@ function handleEdit(e,id){
     e.target.innerText = "Edit";
 
     handleOutput();
-
+    plannerOverview();
   }
+}
+
+function plannerOverview() {
+  const overview = document.querySelector(".plannerOverview");
+
+  if (!overview) return;
+
+  const listOverview = JSON.parse(localStorage.getItem("planOfAction")) || [];
+
+  overview.innerHTML = listOverview
+    .map((item) => {
+      return `<p>${item.agenda}</p>`;
+    })
+    .join("");
 }
